@@ -1,6 +1,6 @@
 import UIKit
 
-protocol CarProtocol {
+protocol CarProtocol { // Почему нет свойства, указывающего какому ДЦ принадлежит тачка? Получается один итот же экземпляр машины, может принадлежать разным ДЦ, что является парадоксом
     var model: String {get}
     var color: String {get}
     var buildDate: String {get}
@@ -20,7 +20,7 @@ protocol DealerhipProtocol {
     func presaleService(_ : inout Car)
     func addToShowroom(_ : inout Car)
     func sellCar(_ : inout Car)
-    func orderCar(_ : Car?) // В задаче указано что метод не принимает никаких параметров. Крайне странно заказывать любую машину
+    func orderCar(_ : Car?) // В задаче указано что метод не принимает никаких параметров. Крайне странно заказывать любую машину.
 }
 extension DealerhipProtocol { //  вынес в расширение протокола, чтобы сделать функцию приватной
     private func offerAccessories(_ : String...) {}
@@ -48,8 +48,6 @@ struct Car: CarProtocol, Equatable {
     }
 }
 
-
-//var existedCars: [Car] = []
 
 
 class Dealer: DealerhipProtocol {
@@ -95,7 +93,6 @@ class Dealer: DealerhipProtocol {
     
     func addToShowroom(_ car: inout Car) {
         self.curCar = car
-        //if stockCars.contains(where: {$0 == car}) {
         print("\n")
         if stockCars.contains(car) {
             stockCars.dropFirst(stockCars.firstIndex(of: car)!)
@@ -111,11 +108,6 @@ class Dealer: DealerhipProtocol {
         if cars.contains(car) {
             curCar = car
             let carIndexInCars = cars.firstIndex(of: car)
-//            let carIndexInStockCars: Int
-//            let carIndexInShowroomCars: Int
-            //Проверяем, стоят машины в автосалоне или на складке, чтобы потом их дропнуть оттуда.
-//            if stockCars.contains(car) { carIndexInStockCars = stockCars.firstIndex(of: car)! }
-//            else { carIndexInShowroomCars = showroomCars.firstIndex(of: car)! }
             
             offerAccessories("toning", "sport rims", "car alarm")
             cars[carIndexInCars!] = curCar! //Изменили сам экземпляр машины, т.к. в offerAccessories работаем с curCar
@@ -123,11 +115,8 @@ class Dealer: DealerhipProtocol {
             if curCar!.isServiced == true {
                 print("Предпродажная подготовка \(curCar!) уже выполнена.")
                 print("CARS: ", cars)
-                //cars.remove(at: car_index_in_cars!)
                 if stockCars.contains(car) { stockCars.remove(at: stockCars.firstIndex(of: car)!) }
                 else { showroomCars.remove(at: showroomCars.firstIndex(of: car)!) }
-//                stockCars.remove(at: carIndexInStockCars)
-//                showroomCars.remove(at: carIndexInShowroomCars)
                 print("Машина \(curCar!) продана клиенту! Поздравляем!")
             }
             else { print("Машина \(curCar!) еще не прошла предпродажную подготовку. Чтобы продать машину сначала выполниту эту процедуру.")  }
@@ -140,23 +129,22 @@ class Dealer: DealerhipProtocol {
     
     func orderCar(_ bibika: Car? = nil) {
         print("\n ORDER CAR")
-        //let diff = Car.existedCars.difference(from: cars)
         if bibika == nil {
-        var diff: [Car] = [] // Содержит только те машины, которые были созданы, но не было добавлены е текущему дилерскому центру
-        for car in Car.existedCars {
-            if cars.contains(car) == false {
-                diff.append(car)
+            var diff: [Car] = [] // Содержит только те машины, которые были созданы, но не было добавлены е текущему дилерскому центру
+            for car in Car.existedCars {
+                if cars.contains(car) == false {
+                    diff.append(car)
+                }
             }
+            
+            if diff.isEmpty == false {
+                let randCar = diff.randomElement()
+                stockCars.append(randCar!)
+                print("\(randCar!.model) была добавлена на парковку дилерского центра '\(name)'")
+            }
+            else { print("На заводе нет новых машин") } // нет экземпляров Car, не добавленных в текущий ДЦ
         }
-        
-        if diff.isEmpty == false {
-            let randCar = diff.randomElement()
-            stockCars.append(randCar!)
-            print("\(randCar!.model) была добавлена на парковку дилерского центра '\(name)'")
-        }
-        else { print("На заводе нет новых машин") } // нет экземпляров Car, не добавленных в текущий ДЦ
-        }
-        else {
+        else { // На тот случай, если мы одумаемся и будем знать, какую машину заказать. Правда тут вновь всплывает проблема отсутвия 
             stockCars.append(bibika!)
             print("\(bibika!) была добавлеа на парковку дилерского центра '\(name)'")
         }
@@ -189,7 +177,7 @@ print("\n")
 print(bmwDealer.cars)
 print("\n")
 
-//var dealers =
+
 
 
 
