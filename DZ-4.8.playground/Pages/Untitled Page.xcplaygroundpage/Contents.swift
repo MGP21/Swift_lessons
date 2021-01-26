@@ -49,8 +49,6 @@ struct Car: CarProtocol, Equatable {
 }
 
 
-//var existedCars: [Car] = []
-
 
 class Dealer: DealerhipProtocol {
     var name: String
@@ -95,7 +93,6 @@ class Dealer: DealerhipProtocol {
     
     func addToShowroom(_ car: inout Car) {
         self.curCar = car
-        //if stockCars.contains(where: {$0 == car}) {
         print("\n")
         if stockCars.contains(car) {
             stockCars.dropFirst(stockCars.firstIndex(of: car)!)
@@ -111,11 +108,6 @@ class Dealer: DealerhipProtocol {
         if cars.contains(car) {
             curCar = car
             let carIndexInCars = cars.firstIndex(of: car)
-//            let carIndexInStockCars: Int
-//            let carIndexInShowroomCars: Int
-            //Проверяем, стоят машины в автосалоне или на складке, чтобы потом их дропнуть оттуда.
-//            if stockCars.contains(car) { carIndexInStockCars = stockCars.firstIndex(of: car)! }
-//            else { carIndexInShowroomCars = showroomCars.firstIndex(of: car)! }
             
             offerAccessories("toning", "sport rims", "car alarm")
             cars[carIndexInCars!] = curCar! //Изменили сам экземпляр машины, т.к. в offerAccessories работаем с curCar
@@ -123,11 +115,8 @@ class Dealer: DealerhipProtocol {
             if curCar!.isServiced == true {
                 print("Предпродажная подготовка \(curCar!) уже выполнена.")
                 print("CARS: ", cars)
-                //cars.remove(at: car_index_in_cars!)
                 if stockCars.contains(car) { stockCars.remove(at: stockCars.firstIndex(of: car)!) }
                 else { showroomCars.remove(at: showroomCars.firstIndex(of: car)!) }
-//                stockCars.remove(at: carIndexInStockCars)
-//                showroomCars.remove(at: carIndexInShowroomCars)
                 print("Машина \(curCar!) продана клиенту! Поздравляем!")
             }
             else { print("Машина \(curCar!) еще не прошла предпродажную подготовку. Чтобы продать машину сначала выполниту эту процедуру.")  }
@@ -140,7 +129,6 @@ class Dealer: DealerhipProtocol {
     
     func orderCar(_ bibika: Car? = nil) {
         print("\n ORDER CAR")
-        //let diff = Car.existedCars.difference(from: cars)
         if bibika == nil {
         var diff: [Car] = [] // Содержит только те машины, которые были созданы, но не было добавлены е текущему дилерскому центру
         for car in Car.existedCars {
@@ -189,7 +177,7 @@ print("\n")
 print(bmwDealer.cars)
 print("\n")
 
-//var dealers =
+
 
 
 
